@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<context:component-scan base-package="com.*" />
+	<!-- 引入properties配置文件 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/resources/db/jdbcLocal.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${db.driverClass}"></property>
+		<property name="jdbcUrl" value="${db.url}"></property>
+		<property name="user" value="${db.user}"></property>
+		<property name="password" value="${db.password}"></property>
+		<property name="acquireIncrement" value="${c3p0.acquireIncrement}"></property>
+		<property name="initialPoolSize" value="${c3p0.initialPoolSize}"></property>
+		<property name="maxIdleTime" value="${c3p0.maxIdleTime}"></property>
+		<property name="maxPoolSize" value="${c3p0.maxPoolSize}"></property>
+		<property name="minPoolSize" value="${c3p0.minPoolSize}"></property>
+	</bean>
+
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- configLocation,它是用来指定 MyBatis 的 XML 配置文件路径的 -->
+		<property name="configLocation" value="classpath:resources/mybatis/mybatis-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+		<!-- mapperLocations 属性使用一个资源位置的 list。 这个属性可以用来指定 MyBatis 的 XML 映射器文件的位置 -->
+		<property name="mapperLocations" value="classpath*:com/**/dto/mapper/*.xml" />
+	</bean>
+	
+	<!-- mybatis spring sqlSessionTemplate -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.**.dto.mapper" />
+	</bean>  
+	
+	<import resource="../mybatis/mybatis-mapper.xml"/>
+	<import resource="applicationContext-aop.xml"/>
+	
+	
+</beans>

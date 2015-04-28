@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+	<WxUser>
+		<openid>3456234624356</openid>
+		<nickName>xugang</nickName>
+		<province>上海市</province>
+		<city>上海市</city>
+	</WxUser>
+	<WxUser>
+		<openid>3456234624356</openid>
+		<nickName>xugang</nickName>
+		<province>安徽省</province>
+		<city>市合肥</city>
+	</WxUser>
+
+</list>

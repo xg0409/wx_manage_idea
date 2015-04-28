@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+	>
+
+<!-- namespce为mapper文件唯一标志，建议用该mapper文件对应的实体类的包名+类名 -->
+<mapper namespace="com.wxmanage.user.dto.mapper.WxUserMapper">
+
+	<select id="getWxUser" parameterType="int" resultType="wxUser">
+		<![CDATA[
+			select * from t_wx_user where id = #{id}
+		]]>
+	</select>
+	
+	<select id="selectPage" parameterType="java.util.HashMap" resultType="wxUser">
+		<![CDATA[
+			select * from t_wx_user where 1=1 
+		]]>
+			<if test="condition != null and condition != ''"> ${condition} </if>
+		<![CDATA[
+			limit #{startIndex} , #{endIndex}
+		]]>
+	</select>
+	
+	<select id="pageCount" parameterType="string" resultType="Integer">
+		<![CDATA[
+			select count(*) from t_wx_user where 1=1 
+		]]>
+			<if test="value != null and value != ''"> ${value} </if>
+	</select>
+	
+	<update id="updateWxUser" parameterType="int">
+		update t_wx_user set nickname='gg' where id = ${value}
+	</update>
+
+</mapper>
